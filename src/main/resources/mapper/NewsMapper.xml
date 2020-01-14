@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhongbei.graduation_project.mapper.NewsMapper" >
+
+    <resultMap id="BaseResultMap" type="com.zhongbei.graduation_project.entity.News">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="updateTime" property="updateTime"  />
+    </resultMap>
+
+    <sql id="news" >
+        id,title,content,updateTime
+    </sql>
+
+    <insert id="saveNews" parameterType="com.zhongbei.graduation_project.entity.News">
+        insert into news
+        (id,title,content,updateTime)
+        values (#{id},#{title},#{content},#{updateTime})
+    </insert>
+
+    <select id="getNews" resultMap="BaseResultMap">
+        select <include refid="news"/>
+        from news
+    </select>
+
+    <delete id="deleteNews" parameterType="java.lang.Integer" >
+        delete from news
+        where id = #{id}
+    </delete>
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhongbei.graduation_project.mapper.KnowledgeMapper" >
+
+    <resultMap id="BaseResultMap" type="com.zhongbei.graduation_project.entity.Knowledge">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="updateTime" property="updateTime"  />
+    </resultMap>
+
+    <sql id="knowledge" >
+        id,title,content,updateTime
+    </sql>
+
+    <insert id="saveKnowledge" parameterType="com.zhongbei.graduation_project.entity.Knowledge">
+        insert into knowledge
+        (id,title,content,updateTime)
+        values (#{id},#{title},#{content},#{updateTime})
+    </insert>
+
+    <select id="getKnowledge" resultMap="BaseResultMap">
+        select <include refid="knowledge"/>
+        from knowledge
+    </select>
+
+    <delete id="deleteKnowledge" parameterType="java.lang.Integer" >
+        delete from knowledge
+        where id = #{id}
+    </delete>
+</mapper>
