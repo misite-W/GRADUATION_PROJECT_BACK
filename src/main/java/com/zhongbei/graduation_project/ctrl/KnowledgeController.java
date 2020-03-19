@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class KnowledgeController {
@@ -31,8 +32,8 @@ public class KnowledgeController {
 
     @RequestMapping("/deleteKnowledge")
     @ResponseBody
-    public String deleteKnowledge( int id){
-        knowledgeService.deleteKnowledge(id);
+    public String deleteKnowledge(@RequestBody Map map){
+        knowledgeService.deleteKnowledge((int)map.get("id"));
         return "删除成功！";
     }
 }

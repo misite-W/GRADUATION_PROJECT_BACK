@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.persistence.Id;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class NewsController {
@@ -23,13 +26,16 @@ public class NewsController {
 
     @RequestMapping("/deleteNews")
     @ResponseBody
-    public void deleteNews(int id ){
+    public void deleteNews(@RequestBody Map map ){
+        System.out.println(map.get("id"));
+        int  id  = (int) map.get("id");
         newsService.deleteNews(id);
     }
 
     @RequestMapping("/getNews")
     @ResponseBody
     public List<News> getNews(){
+
         return newsService.getNews();
     }
 

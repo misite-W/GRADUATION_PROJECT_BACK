@@ -1,13 +1,14 @@
 package com.zhongbei.graduation_project.service.Impl;
-
 import com.zhongbei.graduation_project.entity.Users;
 import com.zhongbei.graduation_project.mapper.LoginMapper;
 import com.zhongbei.graduation_project.service.LoginService;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.Pattern;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +42,6 @@ public class LoginServiceImpl implements LoginService {
         }
         return map;
     }
-
 
     @Override
     public String  register(Users users) {

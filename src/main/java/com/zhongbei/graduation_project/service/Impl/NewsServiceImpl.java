@@ -5,8 +5,6 @@ import com.zhongbei.graduation_project.mapper.NewsMapper;
 import com.zhongbei.graduation_project.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.xml.crypto.Data;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
