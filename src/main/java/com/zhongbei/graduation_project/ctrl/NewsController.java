@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.persistence.Id;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -20,16 +21,25 @@ public class NewsController {
 
     @RequestMapping("/saveNews")
     @ResponseBody
-    public String saveNews(@RequestBody News news){
-        return newsService.saveNews(news);
+    public String saveNews(HttpServletRequest request, @RequestBody News news){
+        int flag = (int)request.getSession().getAttribute("flag");
+        if(flag == 2){
+            return newsService.saveNews(news);
+        }
+        else {
+            return "对不起，权限不足！";
+        }
     }
 
     @RequestMapping("/deleteNews")
     @ResponseBody
-    public void deleteNews(@RequestBody Map map ){
-        System.out.println(map.get("id"));
-        int  id  = (int) map.get("id");
-        newsService.deleteNews(id);
+    public void deleteNews( HttpServletRequest request ,@RequestBody Map map ){
+        int flag = (int)request.getSession().getAttribute("flag");
+        if(flag == 2){
+            System.out.println(map.get("id"));
+            int  id  = (int) map.get("id");
+            newsService.deleteNews(id);
+        }
     }
 
     @RequestMapping("/getNews")

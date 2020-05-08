@@ -32,6 +32,9 @@ public class LoginServiceImpl implements LoginService {
           if(user.getPassword().equals(passWord)){
               map.put("flag",user.getFlag());
               map.put("login","yes");
+              map.put("userId",user.getId());
+              map.put("userName",user.getName());
+              map.put("name",user.getName());
           }
           else{
               map.put("login","no");
@@ -52,6 +55,25 @@ public class LoginServiceImpl implements LoginService {
         else {
             return "1";
         }
+    }
+
+    @Override
+    public String addSpecialist(Users users) {
+         loginMapper.addSpecialist(users);
+         return "添加成功";
+    }
+
+    @Override
+    public String changePassword(Map map) {
+        String userName = (String)map.get("userName");
+        String password = (String)map.get("password");
+        String rePassword = (String)map.get("rePassword");
+        System.out.println(userName+password);
+        if(loginMapper.getPassword(userName).equals(password)){
+            loginMapper.changePassword(userName,rePassword);
+            return "修改成功！";
+        };
+        return "原密码错误！";
     }
 
 }

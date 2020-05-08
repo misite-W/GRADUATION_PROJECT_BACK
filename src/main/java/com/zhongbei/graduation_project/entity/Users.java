@@ -10,6 +10,15 @@ public class Users {
     private Integer age;
     private String sex;
     private String phone;
+    private String qq;
+
+    public String getQq() {
+        return qq;
+    }
+
+    public void setQq(String qq) {
+        this.qq = qq;
+    }
 
     public Integer getId() {
         return id;

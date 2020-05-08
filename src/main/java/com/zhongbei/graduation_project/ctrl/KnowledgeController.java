@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -19,9 +20,15 @@ public class KnowledgeController {
 
     @RequestMapping("/saveKnowledge")
     @ResponseBody
-    public String saveKnowledge(@RequestBody Knowledge knowledge){
-        System.out.println("==============");
-        return knowledgeService.saveKnowledge(knowledge);
+    public String saveKnowledge(HttpServletRequest request, @RequestBody Knowledge knowledge){
+        int flag = (int)request.getSession().getAttribute("flag");
+        System.out.println(flag);
+        if(flag == 2){
+            return knowledgeService.saveKnowledge(knowledge);
+        }
+        else {
+            return "对不起，您的权限不足";
+        }
     }
 
     @RequestMapping("/getKnowledge")
@@ -32,8 +39,14 @@ public class KnowledgeController {
 
     @RequestMapping("/deleteKnowledge")
     @ResponseBody
-    public String deleteKnowledge(@RequestBody Map map){
-        knowledgeService.deleteKnowledge((int)map.get("id"));
-        return "删除成功！";
+    public String deleteKnowledge(HttpServletRequest request ,@RequestBody Map map){
+        int flag = (int)request.getSession().getAttribute("flag");
+        if (flag == 2){
+            knowledgeService.deleteKnowledge((int)map.get("id"));
+            return "删除成功！";
+        }
+        else {
+            return "对不起，权限不足!";
+        }
     }
 }

@@ -36,7 +36,12 @@ public class LoginController {
         if (loginService.login(params).get("login").equals("yes")){
             session.setAttribute("username",params.get("username"));
             session.setAttribute("password",params.get("password"));
+            session.setAttribute("flag",loginService.login(params).get("flag"));
+            session.setAttribute("userId",loginService.login(params).get("userId"));
+            session.setAttribute("userName",loginService.login(params).get("userName"));
+            session.setAttribute("name",loginService.login(params).get("name"));
             System.out.println(session.getAttribute("username"));
+            System.out.println(session.getAttribute("flag"));
         }
         return loginService.login(params);
     }
@@ -46,4 +51,24 @@ public class LoginController {
     public String signIn(@RequestBody Users users){
         return loginService.register(users);
     }
+
+    @RequestMapping("/addSpecialist")
+    @ResponseBody
+    public String addSpecialist(HttpServletRequest request ,@RequestBody Users users){
+        int flag = (int)request.getSession().getAttribute("flag");
+        if(flag == 2){
+            return loginService.addSpecialist(users);
+        }
+        else {
+            return "权限不足";
+        }
+    }
+
+
+    @RequestMapping("/changePassword")
+    @ResponseBody
+    public String changePassword(@RequestBody Map param){
+        return loginService.changePassword(param);
+    }
+
 }

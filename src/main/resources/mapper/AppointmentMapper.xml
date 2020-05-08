@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhongbei.graduation_project.mapper.AppointmentMapper">
+    <resultMap id="BaseResultMap" type="com.zhongbei.graduation_project.entity.Appointment">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="student" property="student" jdbcType="VARCHAR" />
+        <result column="specialist" property="specialist" jdbcType="VARCHAR" />
+        <result column="date" property="date" jdbcType="VARCHAR" />
+        <result column="time" property="time" jdbcType="INTEGER" />
+        <result column="delete_flag" property="delete_flag" jdbcType="INTEGER" />
+        <result column="consultion_flag" property="consultion_flag" jdbcType="INTEGER" />
+    </resultMap>
+
+        <insert id="saveAppointment" parameterType="com.zhongbei.graduation_project.entity.Appointment">
+            insert into appointment
+            (id,student,specialist,date,time,delete_flag,consultion_flag)
+            values(#{id},#{student},#{specialist},#{date},#{time},0,0)
+        </insert>
+    
+        <select id="isAppointment" parameterType="java.lang.String" resultType="java.lang.Integer">
+            select count(1) from appointment
+            where student = #{userName} and delete_flag = 0
+        </select>
+
+        <select id="isSpecialistAppointment" parameterType="com.zhongbei.graduation_project.entity.Appointment" resultType="java.lang.Integer">
+            select count(1) from appointment
+            where specialist = #{specialist}
+            and date= #{date}
+            and time= #{time}
+            and delete_flag = 0
+        </select>
+
+        <select id="checkSpecialistAppointment" parameterType="java.lang.String" resultMap="BaseResultMap">
+            select * from appointment
+            where specialist = #{userName}
+            and delete_flag = 0
+        </select>
+        <select id="checkStudentAppointment" parameterType="java.lang.String" resultMap="BaseResultMap">
+            select * from appointment
+            where student = #{userName}
+            and delete_flag = 0
+        </select>
+
+        <update id="clearSpecialistAppointment1">
+            update appointment
+            set delete_flag = 1
+            where specialist = #{userName}
+            and date &lt; #{date}
+        </update>
+
+        <update id="clearSpecialistAppointment2">
+            update appointment
+            set delete_flag = 1
+            where specialist #{userName}
+            and date = #{date}
+            and time &lt;= #{time }
+        </update>
+
+        <update id="clearStudentAppointment1">
+           update appointment
+            set delete_flag = 1
+            where student = #{userName}
+            and date &lt; #{date}
+        </update>
+
+        <update id="clearStudentAppointment2">
+            update appointment
+            set delete_flag = 1
+            where student = #{userName}
+            and date = #{date}
+            and time &lt;= #{time }
+        </update>
+
+        <update id="clearAppointment1">
+            update appointment
+            set delete_flag = 1
+            where date &lt; #{date}
+        </update>
+
+        <update id="clearAppointment2">
+            update appointment
+            set delete_flag = 1
+            where date = #{date}
+            and time &lt;= #{time}
+        </update>
+
+        <update id="deleteAppointmentById" parameterType="java.lang.Integer">
+            update appointment
+            set delete_flag = 1
+            where id = #{id}
+        </update>
+
+        <update id="consultion" parameterType="java.lang.Integer">
+            update appointment
+            set consultion_flag = 1, delete_flag = 1
+            where id = #{id}
+
+        </update>
+
+    <select id="getAppointment" resultMap="BaseResultMap">
+            select * from appointment
+            where delete_flag = 0
+    </select>
+
+    <select id="checkStudentConsultion" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from appointment
+        where student = #{userName}
+        and consultion_flag = 1
+    </select>
+
+    <select id="checkSpecialistConsultion" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from appointment
+        where specialist = #{userName}
+        and consultion_flag = 1
+    </select>
+
+    <select id="checkAllConsultion"  resultMap="BaseResultMap">
+        select * from appointment
+        where consultion_flag = 1
+    </select>
+</mapper>

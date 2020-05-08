@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.Pattern;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -62,9 +64,43 @@ public class ForumController {
     public Comment saveComment(HttpServletRequest request ,@RequestBody Comment comment){
         int commentUserId = (int)request.getSession().getAttribute("userId");
         String commentUserName = (String) request.getSession().getAttribute("userName");
+        long time = (long) new Date().getTime();
+        comment.setCommentTime(time);
         comment.setCommentUserId(commentUserId);
         comment.setCommentUserName(commentUserName);
-        System.out.println(comment);
+        forumService.saveComment(comment);
         return comment;
+    }
+
+    @RequestMapping("/getComments")
+    @ResponseBody
+    public List<Comment> getComments(@RequestBody Map map){
+        int forumId = (int)map.get("forumId");
+        System.out.println("=========");
+        return  forumService.getComments(forumId);
+    }
+
+    @RequestMapping("/getForumListByUserId")
+    @ResponseBody
+    public List<Forum> getForumListByUserId(HttpServletRequest request){
+        int userId = (int)request.getSession().getAttribute("userId");
+        return forumService.getCollectByUserId(userId);
+    }
+
+    @RequestMapping("/collectForum")
+    @ResponseBody
+    public String collectForum(HttpServletRequest request , @RequestBody Map map){
+        int forumId = (int)map.get("forumId");
+        int userId = (int)request.getSession().getAttribute("userId");
+        return forumService.collectForum(forumId,userId);
+    }
+
+    @RequestMapping("/deletMyCollectByForumId")
+    @ResponseBody
+    public String deletMyCollectByForumId(HttpServletRequest request , @RequestBody Map map){
+        int forumId = (int)map.get("forumId");
+        System.out.println(forumId);
+        int userId = (int)request.getSession().getAttribute("userId");
+        return forumService.deletMyCollectByForumId(forumId,userId);
     }
 }

@@ -1,17 +1,26 @@
 package com.zhongbei.graduation_project.entity;
 
 public class Forum {
-    int forum_id;
+    int id;
     String forum_title;
     String forum_content;
     String forum_userName;
+    String update_time;
 
-    public int getForum_id() {
-        return forum_id;
+    public String getUpdate_time() {
+        return update_time;
     }
 
-    public void setForum_id(int forum_id) {
-        this.forum_id = forum_id;
+    public void setUpdate_time(String update_time) {
+        this.update_time = update_time;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int forum_id) {
+        this.id = forum_id;
     }
 
     public String getForum_title() {

@@ -11,9 +11,10 @@
         <result column="age" property="age" jdbcType="INTEGER" />
         <result column="sex" property="sex" jdbcType="VARCHAR" />
         <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="qq" property="qq" jdbcType="VARCHAR" />
     </resultMap>
     <sql id="users" >
-        id,flag,username,password,name,age,sex,phone
+        id,flag,username,password,name,age,sex,phone,qq
     </sql>
     <select id="test" resultType="java.lang.String">
         select username
@@ -30,13 +31,29 @@
 
     <insert id="register" parameterType="com.zhongbei.graduation_project.entity.Users"  >
         insert into users
-        (flag,username,password,name,age,sex,phone)
-        values (0,#{username},#{password},#{name},#{age},#{sex},#{phone})
+        (flag,username,password,name,age,sex,phone,qq)
+        values (0,#{username},#{password},#{name},#{age},#{sex},#{phone},#{qq})
     </insert>
 
+    <insert id="addSpecialist" parameterType="com.zhongbei.graduation_project.entity.Users">
+         insert into users
+        (flag,username,password,name,age,sex,phone,qq)
+        values (1,#{username},#{password},#{name},#{age},#{sex},#{phone},#{qq})
+    </insert>
     <select id="getUserNameByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
         select <include refid="users"/>
         from users
         where username = #{username}
     </select>
+
+    <select id="getPassword" parameterType="java.lang.String" resultType="java.lang.String">
+        select password
+        from users
+        where username = #{userName}
+    </select>
+    <update id="changePassword" >
+        update users
+        set password = #{password}
+        where username = #{userName}
+    </update>
 </mapper>

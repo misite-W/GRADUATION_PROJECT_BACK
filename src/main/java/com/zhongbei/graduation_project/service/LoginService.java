@@ -15,4 +15,8 @@ public interface LoginService {
 
     public String register(Users users);
 
+    public String addSpecialist(Users users);
+
+    public String changePassword(Map map);
+
 }

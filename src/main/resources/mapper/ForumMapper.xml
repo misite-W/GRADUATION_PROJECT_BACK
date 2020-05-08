@@ -2,25 +2,70 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zhongbei.graduation_project.mapper.ForumMapper">
     <resultMap id="BaseResultMap" type="com.zhongbei.graduation_project.entity.Forum">
-        <id column="forum_id" property="forum_id" jdbcType="INTEGER" />
+        <id column="id" property="id" jdbcType="INTEGER" />
         <result column="forum_title" property="forum_title" jdbcType="VARCHAR" />
         <result column="forum_content" property="forum_content" jdbcType="VARCHAR" />
         <result column="forum_userName" property="forum_userName" jdbcType="VARCHAR" />
     </resultMap>
-
+    <resultMap id="BaseResultMap1" type="com.zhongbei.graduation_project.entity.Comment">
+        <id column="commentId" property="commentId" jdbcType="INTEGER" />
+        <result column="commentUserId" property="commentUserId" jdbcType="VARCHAR" />
+        <result column="commentForumId" property="commentForumId" jdbcType="VARCHAR" />
+        <result column="commentTime" property="commentTime" jdbcType="INTEGER" />
+        <result column="commentUserName" property="commentUserName" jdbcType="VARCHAR" />
+    </resultMap>
     <insert id="saveForum" parameterType="com.zhongbei.graduation_project.entity.Forum">
         insert into forum
-        (forum_id,forum_title,forum_content,forum_userName)
-        values (#{forum_id},#{forum_title},#{forum_content},#{forum_userName})
+        (id,forum_title,forum_content,forum_userName,update_time)
+        values (#{id},#{forum_title},#{forum_content},#{forum_userName},#{update_time})
     </insert>
 
     <select id="getForum" resultMap="BaseResultMap">
         select * from forum
-    </select>
+        order by update_time desc
+     </select>
 
 
     <select id="queryForum" parameterType="java.lang.String" resultMap="BaseResultMap">
         select * from forum
-        where forum_title like '%' || #{forum_title} || '%'
+        where forum_title like "%"#{forum_title}"%"
     </select>
+
+    <select id="getForumById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select * from forum
+        where id = #{forumId}
+    </select>
+
+    <delete id="deleteForumById" parameterType="java.lang.Integer">
+        delete  from forum
+        where id = #{id}
+    </delete>
+
+    <insert id="saveComment" parameterType="com.zhongbei.graduation_project.entity.Comment">
+        insert into comment
+        (commentId,commentContent,commentUserId,commentForumId,commentTime,commentUserName)
+        values (#{commentId},#{commentContent},#{commentUserId},#{commentForumId},#{commentTime},#{commentUserName})
+    </insert>
+
+    <select id="getComments" parameterType="java.lang.Integer" resultMap="BaseResultMap1">
+        select * from comment
+        where commentForumId = #{forumId}
+    </select>
+
+    <select id="getForumIdByUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select forumId from collect
+        where userId = #{userId}
+    </select>
+
+    <insert id="collectForum" parameterType="com.zhongbei.graduation_project.entity.Collect">
+        insert  into collect
+        (collectId,forumId,userId)
+        values (#{collectId},#{forumId},#{userId})
+    </insert>
+
+    <delete id="deletMyCollectByForumId" >
+        delete  from collect
+        where forumId = #{forumId}
+        and userId = #{userId}
+    </delete>
 </mapper>
