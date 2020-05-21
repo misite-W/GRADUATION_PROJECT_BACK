@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -39,7 +38,8 @@ public class AppointmentController {
     @ResponseBody
     public List<Appointment> chechMyAppointment(HttpServletRequest request ){
         int flag = (int)request.getSession().getAttribute("flag");
-        String userName = (String)request.getSession().getAttribute("username");
+        String userName =
+                (String)request.getSession().getAttribute("username");
         if(flag==1){
             return appointmentService.checkSpecialistAppointment(userName);
         }
